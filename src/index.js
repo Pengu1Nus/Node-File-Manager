@@ -1,6 +1,10 @@
 import readline from 'readline';
 import os from 'os';
-import { changeDirectory, upToDirectory } from './nwd/navigation.js';
+import {
+  changeDirectory,
+  upToDirectory,
+  listFilesAndFolders,
+} from './nwd/navigation.js';
 import { cat } from './fs/readFile.js';
 
 const rl = readline.createInterface({
@@ -18,7 +22,7 @@ try {
 
 rl.prompt();
 
-rl.on('line', (input) => {
+rl.on('line', async (input) => {
   const [cmd, ...args] = input.trim().split(' ');
   switch (cmd) {
     case 'up':
@@ -29,6 +33,10 @@ rl.on('line', (input) => {
       break;
     case 'cp':
       console.log(`You are currently in ${process.cwd()}`);
+      break;
+    case 'ls':
+      const listResult = await listFilesAndFolders(process.cwd());
+      console.table(listResult);
       break;
     case 'cat':
       console.log(`You are currently in ${process.cwd()}`);
